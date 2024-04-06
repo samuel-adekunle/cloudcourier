@@ -1,6 +1,10 @@
-package types
+package cld
 
-type CloudCourierBridge struct {
+import "github.com/cloudinary/cloudinary-go/v2"
+
+type Cloudinary struct {
+	// This is for the transport side responsible for the intercommunication
+	Client *cloudinary.Cloudinary
 	// This helps to show the cloud provider you want to use
 	Provider string
 	// The Api key for now I am just using it to access the cloudinary services
