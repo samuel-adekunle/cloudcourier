@@ -3,6 +3,8 @@ package cld
 import "github.com/cloudinary/cloudinary-go/v2"
 
 type Cloudinary struct {
+	// Name you give to a file to be stored in cloudinary
+	Tag string
 	// This is for the transport side responsible for the intercommunication
 	Client *cloudinary.Cloudinary
 	// This helps to show the cloud provider you want to use
