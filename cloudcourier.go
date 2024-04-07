@@ -29,9 +29,18 @@ func NewCloudCourier(ccb *CloudCourierBridge) (General, error) {
 		return nil, fmt.Errorf("does not support that cloud services %s", ccb.CloudProvider)
 	}
 
-	if ccb.CloudProvider == CloudinaryServices {
-		continue
-	} else {
+	// Other services require a bucket but cloudinary services do not require a bucket
+	if ccb.CloudProvider == CloudinaryServices && ccb.CloudName == "" {
+		return nil, fmt.Errorf("since we are using cloudinary service you need to specify the cloudname")
+	}
+
+	if ccb.CloudProvider != CloudinaryServices && ccb.CloudBucket == "" {
+		// For now this is what I am thinking I will do but still working on how I will continue about it
+		return nil, nil
+	}
+	switch ccb.CloudProvider {
+	case CloudinaryServices:
+		return cloudinaryFuncMiddleService(ccb)
 	}
 	return &cld.Cloudinary{}, nil
 }

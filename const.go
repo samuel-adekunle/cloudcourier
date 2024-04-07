@@ -2,10 +2,14 @@ package cloudcourier
 
 import "github.com/Ibukun-tech/cloudcourier/config"
 
-const (
+var (
 	provider = map[string]string{
-		CloudinaryServices: "cloudinary"
+		CloudinaryServices: "cloudinary",
 	}
+)
+
+const (
+
 	// This is for the services of the cloudinary
 	CloudinaryServices = config.CloudinaryServices
 )

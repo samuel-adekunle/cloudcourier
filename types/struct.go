@@ -9,4 +9,6 @@ type CloudCourierBridge struct {
 	ApiSecret string
 	// This is for cloudinary you need to provide the cloud name for the cloudinary
 	CloudName string
+	//We need to specify bucket for other cloud storage providers that make use of it for example s3, Google cloud storage
+	CloudBucket string
 }
