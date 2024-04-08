@@ -3,8 +3,6 @@ package cloudcourier
 import (
 	"fmt"
 	"reflect"
-
-	cld "github.com/Ibukun-tech/cloudcourier/cloudinary"
 )
 
 func NewCloudCourier(ccb *CloudCourierBridge) (General, error) {
@@ -41,6 +39,7 @@ func NewCloudCourier(ccb *CloudCourierBridge) (General, error) {
 	switch ccb.CloudProvider {
 	case CloudinaryServices:
 		return cloudinaryFuncMiddleService(ccb)
+	default:
+		return nil, fmt.Errorf("this %s cloud provider does not exist or does not support at the moment", ccb.CloudProvider)
 	}
-	return &cld.Cloudinary{}, nil
 }

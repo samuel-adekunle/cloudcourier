@@ -6,6 +6,7 @@ import (
 )
 
 func main() {
+
 	type Value struct{}
 	s := &Value{}
 	v := reflect.TypeOf(s)

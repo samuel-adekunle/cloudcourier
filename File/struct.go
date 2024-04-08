@@ -14,6 +14,10 @@ type File struct {
 	FileName string `json:"fileName"`
 }
 
+type FormFile struct {
+	Files []*File `json:"multiFiles"`
+}
+
 func (f *File) CheckIfTheFileIsValid() error {
 	if f.Path == "" && f.ToHandle == nil {
 		return errors.New("you have to set either the path or the handle")
