@@ -19,7 +19,7 @@ func cloudinaryFuncMiddleService(ccb *CloudCourierBridge) (General, error) {
 	}
 	// For now just return this
 	return &cld.Cloudinary{
-
-		Client: client,
+		CloudName: ccb.CloudName,
+		Client:    client,
 	}, nil
 }
