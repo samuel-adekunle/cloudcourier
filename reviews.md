@@ -38,6 +38,7 @@ Your project structure is currently like this:
 It is not neat. `File` directory should solely focus on file handling. The `struct.go` inside should be renamed to something else.
 Don't use standard Golang keywords for your own implementations. At least, `file_struct.go` is better. I generally use an `internal/models.go`
 and store all my generic models there. then a `<package_name>/model.go` to store models pertaining to a particular sub-directory.
+Same thing for `const`, its a Go keyword, so no `const.go`.
 
 Each cloud provider (Cloudinary, AWS S3) should have its own directory similar to the way you have `cloudinary`. That way, its
 easier to extend the SDK with additional providers.
@@ -72,9 +73,31 @@ You can refactor the codebase to this:
 └── reviews.md
 ```
 
+## Commenting
+Commenting code for an SDK or anything that Open Source users will consume is
+very important. So always add comments to identifiers you create. And commenting
+in Go is not just anyhow. It has a pattern you have to adhere to.
+I've created an example file.go that practicalizes these suggestions.
+
+## Returns
+Always return an `error` type in every function possible, as long as its open source.
+Its a standard practice.
+
+## Naming convention
+`General` is not a good name. Give clearer names to identifiers, so that your SDK users can understand what each of them does.
+See an example in 
+
+## Flow
+You should handle things sequentially. First, start the file management.
+After that, the cloud provider management.
+After that, the cloudcourier bridge to the cloud proviers.
+After that, the file upload to cloudcourier.
+After that, the transfer of file from cloudcourier bridge to the provider.
+After that, cleanups and review of flow.
+
 ## Files
 - a single file can be saved.
 - multiple files can be saved.
 - an entire directory of files can be saved.
 - create file management in its own sub-directory (called package in Go)
-- file object/struct must have specific f
+- file object/struct must have specific 
