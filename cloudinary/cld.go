@@ -11,6 +11,7 @@ import (
 )
 
 func (c *Cloudinary) UploadFile(fileInterface interface{}) error {
+	fmt.Println("i AM HERE WORKING ALREADY ------ 1")
 	files, ok := fileInterface.(file.File)
 	if !ok {
 		return fmt.Errorf("it must be of the type cloudcourier.File")
@@ -19,17 +20,19 @@ func (c *Cloudinary) UploadFile(fileInterface interface{}) error {
 	if err := files.CheckIfTheFileIsValid(); err != nil {
 		return err
 	}
-
+	fmt.Println("Tell me when you are where ")
 	if !c.Connected() {
 		return fmt.Errorf("no active cloudinary client")
 	}
 	// var err error
 	if files.Path != "" {
-		_, err = os.Stat(files.Path)
+
+		_, err := os.Stat(files.Path)
+
 		if err != nil {
 			return fmt.Errorf("this path does not exist")
 		}
-		if !os.IsNotExist(err) {
+		if os.IsNotExist(err) {
 			return fmt.Errorf("this path does not exist")
 		}
 		file, err := os.Open(files.Path)
@@ -43,15 +46,15 @@ func (c *Cloudinary) UploadFile(fileInterface interface{}) error {
 			files.FileName = filepath.Base(files.Path)
 		}
 	}
-	var ctx context.Context;
+
+	ctx := context.Background()
 	// Work on getting a random public Id or I can specify it from the
 	// I feel i need to implement the side like a go routine why because I am upload the file into the storage activite and also trying to get resources from it
-	resp err := c.Client.Upload.Upload(ctx, files.FileName, uploader.UploadParams{PublicID: c.CloudName})
+	resp, err := c.Client.Upload.Upload(ctx, files.FileName, uploader.UploadParams{PublicID: c.CloudName})
 	if err != nil {
-		return fmt.Errorf("failed to upload to the cloud storage %s", err)
+		return fmt.Errorf("%s here abi", err)
 	}
-
-	fmt.Println(resp.URL)
+	fmt.Println(resp)
 	return nil
 }
 

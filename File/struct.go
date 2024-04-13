@@ -25,8 +25,8 @@ func (f *File) CheckIfTheFileIsValid() error {
 	if f.Path != "" && f.ToHandle != nil {
 		return errors.New("you can only set once at a time either the path or tohandle")
 	}
-	if f.FileName != "" && f.ToHandle == nil {
-		return errors.New("once you are setting the file name you need to set the tohandle")
+	if f.FileName == "" && f.ToHandle != nil {
+		return errors.New("before you set the handle you need to specify the name of the file")
 	}
 	return nil
 }
