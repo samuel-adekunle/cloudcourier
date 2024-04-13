@@ -9,6 +9,7 @@ import (
 //
 // It is designed to accommodate various cloud services by storing essential credentials.
 type CloudCourierBridge struct {
+	CloudRegion   string // used by AWS S3 to specify the Region
 	CloudProvider string // Identifier for the cloud service provider
 	ApiKey        string // API key for services that require it, such as Cloudinary
 	ApiSecret     string // API secret corresponding to the ApiKey for added security

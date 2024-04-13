@@ -2,11 +2,11 @@ package aws_provider
 
 import (
 	"fmt"
+	"io"
+
 	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/s3"
 	"github.com/aws/aws-sdk-go/service/s3/s3manager"
-	"io"
 )
 
 // AWSClient struct encapsulates the AWS S3 client to manage storage operations.
@@ -18,20 +18,6 @@ type AWSClient struct {
 // NewAWSClient creates a new client for AWS S3 operations.
 //
 // It requires AWS credentials and a region to initialize the S3 service client.
-func NewAWSClient(bucketName, region string) (*AWSClient, error) {
-	sess, err := session.NewSession(&aws.Config{
-		Region: aws.String(region),
-	})
-	if err != nil {
-		return nil, fmt.Errorf("failed to create AWS session: %v", err)
-	}
-	s3Svc := s3.New(sess)
-
-	return &AWSClient{
-		S3:         s3Svc,
-		BucketName: bucketName,
-	}, nil
-}
 
 // UploadFile uploads a file to S3 from an io.Reader.
 func (client *AWSClient) UploadFile(filePath string, reader io.Reader) error {
