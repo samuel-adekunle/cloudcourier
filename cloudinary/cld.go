@@ -1,4 +1,4 @@
-package cld
+package cloudinary_client
 
 import (
 	"context"
