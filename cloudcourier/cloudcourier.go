@@ -39,6 +39,8 @@ func NewCloudCourier(cbb *CloudCourierBridge) (StorageClient, error) {
 		return newCloudinaryClient(cbb)
 	case "aws":
 		return newAWSClient(cbb)
+	case "gcs":
+		return newGcsClient(cbb)
 	default:
 		return nil, fmt.Errorf("unsupported cloud provider: %s", cbb.CloudProvider)
 	}

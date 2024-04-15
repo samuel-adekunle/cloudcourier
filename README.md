@@ -1,6 +1,6 @@
 # Cloud Courier
 
-Cloud Courier is a Go library designed to simplify the process of uploading files to various cloud storage services. 
+Cloud Courier is a Go library designed to simplify the process of uploading files to various cloud storage services.
 It provides a unified interface to interact with different cloud providers, allowing developers to integrate cloud storage capabilities into their applications seamlessly.
 
 ## Features
@@ -26,13 +26,13 @@ To install Cloud Courier, use the following `go get` command:
 
 ```sh
 go get -u github.com//cloudcourier
-````
+```
 
 ### Usage
 
 Here's a quick example of how to use Cloud Courier to upload a file to Cloudinary:
 
-``` go
+```go
 package main
 
 import (
