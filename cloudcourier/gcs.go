@@ -12,7 +12,7 @@ func newGcsClient(ccb *CloudCourierBridge) (StorageClient, error) {
 	if ccb.CloudBucket == "" {
 		return nil, fmt.Errorf("no bucket name for google cloud storage")
 	}
-	var ctx context.Context
+	ctx := context.Background()
 	client, err := storage.NewClient(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("%s", err)
