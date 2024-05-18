@@ -12,7 +12,9 @@ It provides a unified interface to interact with different cloud providers, allo
 
 ## Supported Cloud Providers
 
-- Cloudinary
+- AWS
+- Google Cloud Storage (coming soon)
+- Cloudinary (coming soon)
 
 ## Getting Started
 
@@ -25,57 +27,45 @@ It provides a unified interface to interact with different cloud providers, allo
 To install Cloud Courier, use the following `go get` command:
 
 ```sh
-go get -u github.com//cloudcourier
+go get -u github.com/samuel-adekunle/cloudcourier
 ```
 
 ### Usage
 
-Here's a quick example of how to use Cloud Courier to upload a file to Cloudinary:
+Here's a quick example of how to use Cloud Courier to list files in an AWS directory:
 
 ```go
 package main
 
 import (
-    "github.com/yourusername/cloudcourier"
-    "github.com/yourusername/cloudcourier/types"
+	"fmt"
+	"log"
+
+	"github.com/samuel-adekunle/cloudcourier"
 )
 
 func main() {
-    // Initialize the CloudCourierBridge with your Cloudinary credentials
-    ccb := &types.CloudCourierBridge{
-        CloudProvider: "cloudinary",
-        ApiKey:        "your-api-key",
-        ApiSecret:     "your-api-secret",
-        CloudName:     "your-cloud-name",
-    }
+	client, err := cloudcourier.NewProviderClient(&cloudcourier.AWSProviderConfig{
+		Bucket: "bucket-1",
+		Region: "xx-north-1",
+	})
+	if err != nil {
+		log.Fatalln(err)
+	}
 
-    // Create a new Cloud Courier instance
-    courier, err := cloudcourier.NewCloudCourier(ccb)
-    if err != nil {
-        log.Fatalf("Failed to create Cloud Courier: %v", err)
-    }
+	files, err := client.ListFiles("example/directory")
+	if err != nil {
+		log.Fatalln(err)
+	}
 
-    // Upload a file
-    err = courier.UploadFile(yourFile)
-    if err != nil {
-        log.Fatalf("Failed to upload file: %v", err)
-    }
+	fmt.Println("Files:")
+	for _, v := range files {
+		fmt.Println(v)
+	}
 }
 ```
 
-Replace `your-api-key`, `your-api-secret`, and `your-cloud-name` with your actual Cloudinary credentials.
-
-### Documentation
-
-For detailed documentation, refer to the `docs` directory in this repository.
-
-## Contributing
-
-We welcome contributions to Cloud Courier\! Please read our [CONTRIBUTING.md](CONTRIBUTING.md) file to see how you can help improve this project.
-
-## License
-
-Cloud Courier is released under the MIT License. See the [LICENSE](LICENSE) file for more details.
+See more examples in the [examples directory](/examples/)
 
 ## Acknowledgments
 
@@ -83,4 +73,4 @@ Cloud Courier is released under the MIT License. See the [LICENSE](LICENSE) file
 
 ## Contact
 
-For questions and feedback, please reach out to the maintainers at <x-email@example.com>.
+For questions and feedback, please reach out to @samuel-adekunle.

@@ -24,19 +24,20 @@ type ProviderClient interface {
 	GetFile(fileID string) (io.Reader, error)           // Retrieves a file as an io.Reader by its unique identifier.
 }
 
+var providerConstructors = map[Provider]func(ProviderConfig) (ProviderClient, error){
+	AWS:        newAWSProviderClient,
+	GCS:        newGCSProviderClient,
+	CLOUDINARY: newCloudinaryProviderClient,
+}
+
 func NewProviderClient(config ProviderConfig) (ProviderClient, error) {
-	switch config.GetProvider() {
-	case AWS:
-		awsConfig, ok := config.(*AWSProviderConfig)
-		if !ok {
-			return nil, fmt.Errorf("Malformed AWS Provider Config: %v", config)
-		}
-		client, err := NewAWSProviderClient(awsConfig)
-		if err != nil {
-			return nil, err
-		}
-		return client, nil
-	default:
-		return nil, fmt.Errorf("Cloud provider in config is unsupported: %v", config)
+	constructor, supported := providerConstructors[config.GetProvider()]
+	if !supported {
+		return nil, fmt.Errorf("cloud provider in config is unsupported: %v", config)
 	}
+	client, err := constructor(config)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create %v client: %v", config.GetProvider(), err)
+	}
+	return client, nil
 }

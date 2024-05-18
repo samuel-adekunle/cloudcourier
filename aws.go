@@ -20,30 +20,34 @@ func (c *AWSProviderConfig) GetProvider() Provider {
 }
 
 type AWSProviderClient struct {
-	Config   *AWSProviderConfig
-	S3Client *s3.S3
+	Config *AWSProviderConfig
+	Client *s3.S3
 }
 
-func NewAWSProviderClient(config *AWSProviderConfig) (*AWSProviderClient, error) {
-	if config.Bucket == "" || config.Region == "" {
+func newAWSProviderClient(config ProviderConfig) (ProviderClient, error) {
+	awsProviderConfig, ok := config.(*AWSProviderConfig)
+	if !ok {
+		return nil, fmt.Errorf("incorrect provider config provided")
+	}
+	if awsProviderConfig.Bucket == "" || awsProviderConfig.Region == "" {
 		return nil, fmt.Errorf("incomplete AWS configuration")
 	}
 	awsSession, err := session.NewSession(&aws.Config{
-		Region: &config.Region,
+		Region: &awsProviderConfig.Region,
 	})
 	if err != nil {
 		return nil, fmt.Errorf("failed to create AWS session: %v", err)
 	}
 
 	return &AWSProviderClient{
-		Config:   config,
-		S3Client: s3.New(awsSession),
+		Config: awsProviderConfig,
+		Client: s3.New(awsSession),
 	}, nil
 }
 
 // UploadFile uploads a file to S3 from an io.Reader.
 func (client *AWSProviderClient) UploadFile(filePath string, reader io.Reader) error {
-	uploader := s3manager.NewUploaderWithClient(client.S3Client)
+	uploader := s3manager.NewUploaderWithClient(client.Client)
 	_, err := uploader.Upload(&s3manager.UploadInput{
 		Bucket: aws.String(client.Config.Bucket),
 		Key:    aws.String(filePath),
@@ -57,7 +61,7 @@ func (client *AWSProviderClient) UploadFile(filePath string, reader io.Reader) e
 
 // DeleteFile deletes a file from S3 by its key.
 func (client *AWSProviderClient) DeleteFile(fileID string) error {
-	_, err := client.S3Client.DeleteObject(&s3.DeleteObjectInput{
+	_, err := client.Client.DeleteObject(&s3.DeleteObjectInput{
 		Bucket: aws.String(client.Config.Bucket),
 		Key:    aws.String(fileID),
 	})
@@ -70,7 +74,7 @@ func (client *AWSProviderClient) DeleteFile(fileID string) error {
 // ListFiles lists all files in a specified directory of the S3 bucket.
 func (client *AWSProviderClient) ListFiles(directory string) ([]string, error) {
 	var fileNames []string
-	err := client.S3Client.ListObjectsV2Pages(&s3.ListObjectsV2Input{
+	err := client.Client.ListObjectsV2Pages(&s3.ListObjectsV2Input{
 		Bucket: aws.String(client.Config.Bucket),
 		Prefix: aws.String(directory),
 	}, func(page *s3.ListObjectsV2Output, lastPage bool) bool {
@@ -87,7 +91,7 @@ func (client *AWSProviderClient) ListFiles(directory string) ([]string, error) {
 
 // GetFile retrieves a file as an io.Reader by its key from S3.
 func (client *AWSProviderClient) GetFile(fileID string) (io.Reader, error) {
-	output, err := client.S3Client.GetObject(&s3.GetObjectInput{
+	output, err := client.Client.GetObject(&s3.GetObjectInput{
 		Bucket: aws.String(client.Config.Bucket),
 		Key:    aws.String(fileID),
 	})

@@ -1,4 +1,4 @@
-module github.com/Ibukun-tech/cloudcourier
+module github.com/samuel-adekunle/cloudcourier
 
 go 1.21.3
 
