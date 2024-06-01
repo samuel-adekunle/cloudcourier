@@ -45,6 +45,10 @@ func newAWSProviderClient(config ProviderConfig) (ProviderClient, error) {
 	}, nil
 }
 
+func init() {
+	RegisterProviderConstructor(AWS, newAWSProviderClient)
+}
+
 // UploadFile uploads a file to S3 from an io.Reader.
 func (client *AWSProviderClient) UploadFile(filePath string, reader io.Reader) error {
 	uploader := s3manager.NewUploaderWithClient(client.Client)

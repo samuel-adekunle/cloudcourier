@@ -24,10 +24,15 @@ type ProviderClient interface {
 	GetFile(fileID string) (io.Reader, error)           // Retrieves a file as an io.Reader by its unique identifier.
 }
 
-var providerConstructors = map[Provider]func(ProviderConfig) (ProviderClient, error){
-	AWS:        newAWSProviderClient,
-	GCS:        newGCSProviderClient,
-	CLOUDINARY: newCloudinaryProviderClient,
+type ProviderConstructor func(ProviderConfig) (ProviderClient, error)
+
+var providerConstructors map[Provider]ProviderConstructor
+
+func RegisterProviderConstructor(provider Provider, constructor ProviderConstructor) {
+	if providerConstructors == nil {
+		providerConstructors = make(map[Provider]ProviderConstructor)
+	}
+	providerConstructors[provider] = constructor
 }
 
 func NewProviderClient(config ProviderConfig) (ProviderClient, error) {

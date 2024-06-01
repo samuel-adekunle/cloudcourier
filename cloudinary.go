@@ -41,6 +41,10 @@ func newCloudinaryProviderClient(config ProviderConfig) (ProviderClient, error) 
 	}, nil
 }
 
+func init() {
+	RegisterProviderConstructor(CLOUDINARY, newCloudinaryProviderClient)
+}
+
 func (c *CloudinaryProviderClient) UploadFile(filePath string, reader io.Reader) error {
 	return fmt.Errorf("Unimplemented")
 }

@@ -37,6 +37,10 @@ func newGCSProviderClient(config ProviderConfig) (ProviderClient, error) {
 	}, nil
 }
 
+func init() {
+	RegisterProviderConstructor(GCS, newGCSProviderClient)
+}
+
 func (g *GCSProviderClient) UploadFile(filePath string, reader io.Reader) error {
 	var BaseFileName string
 	ctx := context.Background()
