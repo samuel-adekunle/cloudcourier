@@ -16,7 +16,7 @@ type AWSProviderConfig struct {
 }
 
 func (c *AWSProviderConfig) GetProvider() Provider {
-	return AWS
+	return PROVIDER_AWS
 }
 
 type AWSProviderClient struct {
@@ -46,7 +46,7 @@ func newAWSProviderClient(config ProviderConfig) (ProviderClient, error) {
 }
 
 func init() {
-	RegisterProviderConstructor(AWS, newAWSProviderClient)
+	RegisterProviderConstructor(PROVIDER_AWS, newAWSProviderClient)
 }
 
 // UploadFile uploads a file to S3 from an io.Reader.

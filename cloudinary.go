@@ -15,7 +15,7 @@ type CloudinaryProviderConfig struct {
 }
 
 func (c *CloudinaryProviderConfig) GetProvider() Provider {
-	return AWS
+	return PROVIDER_AWS
 }
 
 type CloudinaryProviderClient struct {
@@ -42,7 +42,7 @@ func newCloudinaryProviderClient(config ProviderConfig) (ProviderClient, error) 
 }
 
 func init() {
-	RegisterProviderConstructor(CLOUDINARY, newCloudinaryProviderClient)
+	RegisterProviderConstructor(PROVIDER_CLOUDINARY, newCloudinaryProviderClient)
 }
 
 func (c *CloudinaryProviderClient) UploadFile(filePath string, reader io.Reader) error {

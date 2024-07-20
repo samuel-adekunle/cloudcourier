@@ -14,7 +14,7 @@ type GCSProviderConfig struct {
 }
 
 func (c *GCSProviderConfig) GetProvider() Provider {
-	return GCS
+	return PROVIDER_GCS
 }
 
 type GCSProviderClient struct {
@@ -38,7 +38,7 @@ func newGCSProviderClient(config ProviderConfig) (ProviderClient, error) {
 }
 
 func init() {
-	RegisterProviderConstructor(GCS, newGCSProviderClient)
+	RegisterProviderConstructor(PROVIDER_GCS, newGCSProviderClient)
 }
 
 func (g *GCSProviderClient) UploadFile(filePath string, reader io.Reader) error {

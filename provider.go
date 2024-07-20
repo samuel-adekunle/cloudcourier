@@ -8,9 +8,10 @@ import (
 type Provider int
 
 const (
-	AWS Provider = iota
-	GCS
-	CLOUDINARY
+	PROVIDER_UNSPECIFIED Provider = iota
+	PROVIDER_AWS
+	PROVIDER_GCS
+	PROVIDER_CLOUDINARY
 )
 
 type ProviderConfig interface {
